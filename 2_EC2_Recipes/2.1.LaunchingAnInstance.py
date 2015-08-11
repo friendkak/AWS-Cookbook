@@ -22,7 +22,8 @@ def launch_instance(ami='ami-d114f295',
 # You can pass credentials in to the connect_ec2 method explicitly
 # or you can use the default credentials in your ~/.boto config file
 # as we are doing here.
-    ec2 = boto.connect_ec2()
+    ec2 = boto.connect_ec2('us-west-1',profile_name='personal')
+    instances = ec2.get_all_instances()
 
 # Check to see if specified keypair already exists.
 # If we get an InvalidKeyPair.NotFound error back from EC2,
@@ -40,7 +41,7 @@ def launch_instance(ami='ami-d114f295',
 # If we get an InvalidGroup.NotFound error back from EC2,
 # it means that it doesn't exist and we need to create it.
     try:
-        sg = ec2.get_all_security_groups(groupnames=[group_name])[0]
+        group = ec2.get_all_security_groups(groupnames=[group_name])[0]
     except ec2.ResponseError, e:
         if e.code == "InvalidGroup.NotFound":
             print 'Creating Security group: %s' %group_name

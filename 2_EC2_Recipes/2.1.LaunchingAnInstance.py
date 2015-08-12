@@ -2,6 +2,7 @@ __author__ = 'Shravan Papanaidu'
 import os
 import time
 import boto
+import boto.ec2
 import boto.manage.cmdshell
 
 def launch_instance(ami='ami-d114f295',
@@ -22,7 +23,10 @@ def launch_instance(ami='ami-d114f295',
 # You can pass credentials in to the connect_ec2 method explicitly
 # or you can use the default credentials in your ~/.boto config file
 # as we are doing here.
-    ec2 = boto.connect_ec2('us-west-1',profile_name='personal')
+
+    ec2 = boto.ec2.connect_to_region("us-west-1")
+    # ec2 = boto.connect_ec2(aws_access_key_id='',
+    #                        aws_secret_access_key='')
     instances = ec2.get_all_instances()
 
 # Check to see if specified keypair already exists.
